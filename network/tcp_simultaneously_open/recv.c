@@ -62,5 +62,5 @@ int main(int argc, char **argv)
         break;
     }
     close(sock);
-    return sock;
+    return 0;
 }
