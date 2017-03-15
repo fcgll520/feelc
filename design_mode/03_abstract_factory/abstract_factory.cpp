@@ -89,6 +89,9 @@ int main()
     MultiCore *pmulti_core = fa.CreateMultiCore();
     assert(pmulti_core != NULL);
     pmulti_core->show();
+    
+    delete psingle_core;
+    delete pmulti_core;
 
     FactoryB fb;
     psingle_core = fb.CreateSingleCore();

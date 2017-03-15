@@ -58,6 +58,8 @@ int main()
     assert(pcore != NULL);
     pcore->show();
 
+    delete pcore;
+
     FactoryB fb;
     pcore = fb.CreateSingleCore();
     assert(pcore != NULL);

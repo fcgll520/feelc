@@ -51,6 +51,8 @@ int main()
     assert(pcore != NULL);
     pcore->show();
 
+    delete pcore;
+
     pcore = f.CreateSingleCore(COREB);
     assert(pcore != NULL);
     pcore->show();
