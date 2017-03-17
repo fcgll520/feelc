@@ -48,6 +48,19 @@ void ReserveList(pLinkNode phead)
     phead->next = new_head;
 }
 
+void DestroyList(pLinkNode phead)
+{
+    assert(phead != NULL);
+
+    pLinkNode tmp = phead, next = NULL;
+    while(tmp)
+    {
+        next = tmp->next;
+        free(tmp);
+        tmp = next;
+    }
+}
+
 int main()
 {
     pLinkNode phead = (pLinkNode)malloc(sizeof(LinkNode));
@@ -64,7 +77,7 @@ int main()
     ReserveList(phead);
     DisPlay(phead);
 
-
+    DestroyList(phead);
     return 0;
 }
 
