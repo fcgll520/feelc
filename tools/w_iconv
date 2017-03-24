@@ -1,0 +1,5 @@
+#!/bin/bash
+file=$1
+file_bak=$1.iconv.bak
+iconv -f utf-8 -t gbk ${file} -o ${file_bak}
+\mv -f ${file_bak} ${file}
