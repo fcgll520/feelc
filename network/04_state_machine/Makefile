@@ -1,10 +1,10 @@
 all:clean client server
 
 client:
-	gcc -o client -g -O0 -w -Wall client.c -levent
+	g++ -o client -g -O0 -w client.cpp -levent
 
 server:
-	gcc -o server -g -O0 -w -Wall server.c -levent
+	g++ -o server -g -O0 -w -fpermissive server.cpp -levent
 
 clean:
 	rm -f client 

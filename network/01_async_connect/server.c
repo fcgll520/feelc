@@ -44,16 +44,19 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    memset(&client_addr, 0, addr_len);
-
-    int conn_sock = accept(sock, (struct sockaddr *)&client_addr, &addr_len);
-    if (-1 == conn_sock)
+    while (1)
     {
-        printf("call accept() failed, err:%s\n", strerror(errno));
-        close(sock);
-        return -1;        
+        memset(&client_addr, 0, addr_len);
+        int conn_sock = accept(sock, (struct sockaddr *)&client_addr, &addr_len);
+        if (-1 == conn_sock)
+        {   
+            printf("call accept() failed, err:%s\n", strerror(errno));
+            close(sock);
+            return -1;        
+        }
+        printf("sock: %d, call accept() success, client_addr: %s, client_port: %d\n",
+            sock, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
     }
-    printf("call accept() success, client_addr: %s\n", inet_ntoa(client_addr.sin_addr));
     
 
     close(sock);

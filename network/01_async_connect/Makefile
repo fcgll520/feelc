@@ -1,4 +1,4 @@
-all:client server
+all:clean client server
 
 client:
 	gcc -o client client.c
