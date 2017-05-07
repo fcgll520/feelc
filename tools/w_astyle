@@ -1,0 +1,5 @@
+#!/bin/bash
+
+find ./ -type f -name "*.h" -exec astyle --style=ansi --convert-tabs --align-pointer=name --indent-switches -c -s4 -S -n {} \;
+find ./ -type f -name "*.c" -exec astyle --style=ansi --convert-tabs --align-pointer=name --indent-switches -c -s4 -S -n {} \;
+find ./ -type f -name "*.cpp" -exec astyle --style=ansi --convert-tabs --align-pointer=name --indent-switches -c -s4 -S -n {} \;
