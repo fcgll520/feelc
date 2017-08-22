@@ -1,0 +1,26 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Queue	lockless_queue.cpp	/^    Queue()$/;"	f	class:Queue
+Queue	lockless_queue.cpp	/^class Queue$/;"	c	file:
+S_MAX_SIZE	lockless_queue.cpp	/^const static int S_MAX_SIZE = 11;$/;"	v	file:
+S_THREAD_NUM	lockless_queue.cpp	/^const static int S_THREAD_NUM = 10;$/;"	v	file:
+consumer	lockless_queue.cpp	/^void * consumer(void *)$/;"	f
+dequeue	lockless_queue.cpp	/^    int dequeue()$/;"	f	class:Queue
+enqueue	lockless_queue.cpp	/^    int enqueue(int val)$/;"	f	class:Queue
+get_free_num	lockless_queue.cpp	/^    int get_free_num()$/;"	f	class:Queue	file:
+get_val	lockless_queue.cpp	/^    int get_val(int pos)$/;"	f	class:Queue
+in	lockless_queue.cpp	/^    volatile int    in;$/;"	m	class:Queue	file:
+is_empty	lockless_queue.cpp	/^    bool is_empty()$/;"	f	class:Queue	file:
+is_full	lockless_queue.cpp	/^    bool is_full()$/;"	f	class:Queue	file:
+main	lockless_queue.cpp	/^int main()$/;"	f
+mask	lockless_queue.cpp	/^    int             mask;   \/\/ size-1$/;"	m	class:Queue	file:
+out	lockless_queue.cpp	/^    volatile int    out;$/;"	m	class:Queue	file:
+pdata	lockless_queue.cpp	/^    int             *pdata;$/;"	m	class:Queue	file:
+producer	lockless_queue.cpp	/^void * producer(void * arg)$/;"	f
+s_queue	lockless_queue.cpp	/^static Queue s_queue;$/;"	v	file:
+size	lockless_queue.cpp	/^    int             size;   \/\/最多可以存放的元素$/;"	m	class:Queue	file:
+~Queue	lockless_queue.cpp	/^    ~Queue()$/;"	f	class:Queue
