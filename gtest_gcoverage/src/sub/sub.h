@@ -1,3 +1,6 @@
+#ifndef __W_sub_H__
+#define __W_sub_H__
+
 class Sub 
 {
 public:
@@ -5,3 +8,5 @@ public:
 private:
     void print();
 };
+
+#endif

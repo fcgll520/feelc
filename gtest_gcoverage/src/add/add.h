@@ -1,3 +1,6 @@
+#ifndef __W_add_H__
+#define __W_add_H__
+
 class Add
 {
 public:
@@ -5,3 +8,5 @@ public:
 private:
     void print();
 };
+
+#endif
