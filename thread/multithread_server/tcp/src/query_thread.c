@@ -31,9 +31,6 @@
 		} \
 	} while (0)
 
-static int32_t s_tid = 0;
-static uint32_t s_recv_cnt = 0;
-
 int32_t create_socket()
 {
 	int32_t sock = -1;
@@ -78,19 +75,19 @@ ERR:
 
 void read_cb(evutil_socket_t sock, short events, void *arg)
 {
-	s_recv_cnt += 1;
+	uint32_t *precv_cnt = (uint32_t *)arg;
 
 	char buf[1024];
 	SAFE_RECVFROM(sock, buf, sizeof(buf), NULL);
-	printf("read_cb, tid: %u, cnt: %u, buf: %s\n", s_tid, s_recv_cnt, buf);
+	*precv_cnt += 1;
+	printf("read_cb, tid: %lu, cnt: %u, buf: %s\n", pthread_self(), *precv_cnt, buf);
 ERR:
 	return ;
 }
 
 void * query_thread_cb(void *arg)
 {
-	s_tid = *((int32_t *)arg);
-	printf("threadid: %d\n", s_tid);
+	printf("tid: %lu\n", pthread_self());
 
 
 	int32_t sock = create_socket();
@@ -98,7 +95,6 @@ void * query_thread_cb(void *arg)
 	{
 		goto ERR;
 	}
-
 	struct event_base *pbase = NULL;
 	struct event *pread_event = NULL;
 
@@ -108,7 +104,8 @@ void * query_thread_cb(void *arg)
 		printf("call event_base_new() failed\n");
 		goto ERR;
 	}
-	pread_event = event_new(pbase, sock, EV_READ|EV_PERSIST, read_cb, NULL);
+	uint32_t recv_cnt = 0;
+	pread_event = event_new(pbase, sock, EV_READ|EV_PERSIST, read_cb, &recv_cnt);
 	if (NULL == pread_event)
 	{
 		printf("call event_read() failed\n");
@@ -116,7 +113,7 @@ void * query_thread_cb(void *arg)
 	}
 	event_add(pread_event, NULL);
 
-	printf("tid: %d, enter event dispatch...\n", s_tid);
+	printf("tid: %lu, enter event dispatch...\n", pthread_self());
 	if (-1 == event_base_dispatch(pbase))
 	{
 		printf("call event_base_dispatch() failed\n");
