@@ -11,6 +11,8 @@
 #include <event.h>
 #include "query_thread.h"
 
+extern int32_t tlog[];
+
 #define SAFE_RECVFROM(sock, buf, buf_len, src_addr) \
 	do \
 	{ \
@@ -45,10 +47,10 @@ int32_t create_socket()
 	}
 
 	int32_t enable = 1;
-	/*if (-1 == setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)))
+	if (-1 == setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(enable)))
 	{
 		printf("call setsockopt() failed, set SO_REUSEADDR failed, err: %s\n", strerror(errno));
-	}*/
+	}
 	if (-1 == setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &enable, sizeof(enable)))
 	{
 		printf("call setsockopt() failed, set SO_REUSEPORT failed, err: %s\n", strerror(errno));
@@ -75,13 +77,13 @@ ERR:
 
 void read_cb(evutil_socket_t sock, short events, void *arg)
 {
-	uint32_t *precv_cnt = (uint32_t *)arg;
+	uint32_t idx = *(uint32_t *)arg;
 
 	char buf[1024];
 	struct sockaddr_in client_addr;
 	SAFE_RECVFROM(sock, buf, sizeof(buf), &client_addr);
-	*precv_cnt += 1;
-	printf("read_cb, tid: %lu, client port: %u, cnt: %u, buf: %s\n", pthread_self(), ntohs(client_addr.sin_port), *precv_cnt, buf);
+	tlog[idx] += 1;
+	printf("read_cb, tid: %lu, client port: %u, buf: %s\n", pthread_self(), ntohs(client_addr.sin_port), buf);
 ERR:
 	return ;
 }
@@ -105,8 +107,7 @@ void * query_thread_cb(void *arg)
 		printf("call event_base_new() failed\n");
 		goto ERR;
 	}
-	uint32_t recv_cnt = 0;
-	pread_event = event_new(pbase, sock, EV_READ|EV_PERSIST, read_cb, &recv_cnt);
+	pread_event = event_new(pbase, sock, EV_READ|EV_PERSIST, read_cb, arg);
 	if (NULL == pread_event)
 	{
 		printf("call event_read() failed\n");
