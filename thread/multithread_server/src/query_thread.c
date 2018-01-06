@@ -56,7 +56,7 @@ int32_t create_socket()
 
 	memset(&local_addr, sizeof(local_addr), 0);
 	local_addr.sin_family = AF_INET;
-	local_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	local_addr.sin_addr.s_addr = htonl(INADDR_ANY); //inet_addr("127.0.0.1");
 	local_addr.sin_port = htons(55555);
 	if (-1 == bind(sock, (const struct sockaddr *)&local_addr, addr_len))
 	{
@@ -78,9 +78,10 @@ void read_cb(evutil_socket_t sock, short events, void *arg)
 	uint32_t *precv_cnt = (uint32_t *)arg;
 
 	char buf[1024];
-	SAFE_RECVFROM(sock, buf, sizeof(buf), NULL);
+	struct sockaddr_in client_addr;
+	SAFE_RECVFROM(sock, buf, sizeof(buf), &client_addr);
 	*precv_cnt += 1;
-	printf("read_cb, tid: %lu, cnt: %u, buf: %s\n", pthread_self(), *precv_cnt, buf);
+	printf("read_cb, tid: %lu, client port: %u, cnt: %u, buf: %s\n", pthread_self(), ntohs(client_addr.sin_port), *precv_cnt, buf);
 ERR:
 	return ;
 }

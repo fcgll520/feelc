@@ -7,11 +7,11 @@ SRC := $(wildcard ${DIR_SRC}/*.c)
 
 OBJ = $(patsubst %.c,%.o,${SRC})
 
-TARGET = client
+TARGET = main
 BIN_TARGET = ${TARGET}
 
-CFLAGS = -g -O2 -Wall -std=gnu99
-LIBS =
+CFLAGS = -g -O2 -Wall -w -std=gnu99
+LIBS = -lpthread -levent
 
 ${BIN_TARGET} : ${OBJ}
 	${CC} ${CFLAGS} ${OBJ} ${LIBS} -o $@
