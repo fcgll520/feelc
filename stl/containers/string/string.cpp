@@ -85,22 +85,24 @@ int main(int argc, char const *argv[])
 	printf("str: %s, %s\n\n", str.c_str(), str.data());
 
 	printf("func get_allocator\n");
-	char *pos = str.get_allocator().allocate(5);
-	for (int i = 0; i < 5; ++i)
 	{
-		str.get_allocator().construct(&pos[i], i+100);
+		char *pos = str.get_allocator().allocate(5);
+		for (int i = 0; i < 5; ++i)
+		{
+			str.get_allocator().construct(&pos[i], i+100);
+		}
+		for (int i = 0; i < 5; ++i)
+		{
+			printf("%d,", pos[i]);
+		}
+		printf("\n");
+		printf("str: %s\n\n", str.c_str());
+		for (int i = 0; i < 5; ++i)
+		{
+			str.get_allocator().destroy(&pos[i]);
+		}
+		str.get_allocator().deallocate(pos, 5);
 	}
-	for (int i = 0; i < 5; ++i)
-	{
-		printf("%d,", pos[i]);
-	}
-	printf("\n");
-	printf("str: %s\n\n", str.c_str());
-	for (int i = 0; i < 5; ++i)
-	{
-		str.get_allocator().destroy(&pos[i]);
-	}
-	str.get_allocator().deallocate(pos, 5);
 
 	printf("func copy\n");
 	char buffer[20] = { '\0' };
@@ -108,8 +110,87 @@ int main(int argc, char const *argv[])
 	size_t copy_len = str.copy(buffer, 10, 3);
 	printf("buffer: %s, copy_len: %u\n\n", buffer, copy_len);
 
+	printf("func find, rfind\n");
+	{
+		string search_str = "cde";
+		size_t pos = str.find(search_str);
+		printf("find string(%s), pos: %d, %c, npos: %0x\n", search_str.c_str(), pos, str[pos],
+			string::npos);
+		// 跳过3个字符
+		pos = str.find(search_str, 3);
+		printf("find string(%s), pos: %u\n", search_str.c_str(), pos);
 
-	
+		search_str = "def";
+		pos = str.rfind(search_str);
+		printf("rfind string(%s), pos: %d, %c\n\n", search_str.c_str(), pos, str[pos]);
+	}
 
+	printf("func find_first_of, find_last_of\n");
+	{
+		str = "abcdefabcdefabcdef";
+		string search_str = "cde";
+		size_t pos = str.find_first_of(search_str);
+		printf("find_first_of string(%s), pos: %u, %c\n", search_str.c_str(), pos, str[pos]);
+
+		pos = str.find_last_of(search_str);
+		printf("find_last_of string(%s), pos: %u, %c\n\n", search_str.c_str(), pos, str[pos]);
+	}
+
+	printf("func find_first_not_of, find_last_not_of\n");
+	{
+		str = "abcdef-hijk";
+		string search_str = "abcdefhijk";
+		size_t pos = str.find_first_not_of(search_str);
+		printf("find_first_not_of string(%s), pos: %u, %c\n", search_str.c_str(), pos, str[pos]);
+
+		str = "abcdef-+hijk";
+		pos = str.find_last_not_of(search_str);
+		printf("find_last_not_of string(%s), pos: %u, %c\n\n", search_str.c_str(), pos, str[pos]);
+	}
+
+	printf("func substr\n");
+	string sub_str = str.substr(1, 5);
+	printf("substr %s\n\n", sub_str.c_str());
+
+	printf("func compare\n");
+	{
+		string str = "abcdef";
+		string str1 = "abcdef";
+		printf("compare string(%s), %d\n", str1.c_str(), str.compare(str1));
+		str1 = "abcde";
+		printf("compare string(%s), %d\n", str1.c_str(), str.compare(str1));
+		str1 = "abcdeg";
+		printf("compare string(%s), %d\n\n", str1.c_str(), str.compare(str1));
+	}
+
+	printf("func operator+\n");
+	{
+		str = "abcdef";
+		string add_string = "123";
+		str = str + "+" + 'x' + '?' + add_string;
+		printf("operator+ %s\n\n", str.c_str());
+	}
+
+	printf("func relational operators\n");
+	{
+		string str1 = "123";
+		string str2 = "123";
+		printf("operator == %d\n", str1 == str2);
+		printf("operator != %d\n", str1 != str2);
+		printf("operator >  %d\n", str1 >  str2);
+		printf("operator >= %d\n", str1 >= str2);
+		printf("operator <  %d\n", str1 <  str2);
+		printf("operator <= %d\n", str1 <= str2);
+		printf("\n");
+	}
+
+	printf("func swap\n");
+	{
+		string str1 = "123";
+		string str2 = "abc";
+		printf("swap befor: %s, %s\n", str1.c_str(), str2.c_str());
+		swap(str1, str2);
+		printf("swap after: %s, %s\n", str1.c_str(), str2.c_str());	
+	}
 	return 0;
 }
