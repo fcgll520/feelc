@@ -867,8 +867,8 @@ int ikcp_input(ikcpcb *kcp, const char *data, long size)
 			}	else {					//达到慢启动阈值，
 				if (kcp->incr < mss) kcp->incr = mss;				
 				kcp->incr += (mss * mss) / kcp->incr + (mss / 16);
-				if ((kcp->cwnd + 1) * mss <= kcp->incr) {	// TODO 这里不太懂，这样的话cwnd比较慢，还没有tcp增长快呢
-					kcp->cwnd++;		//当cwnd<=16/15的时候，才成立
+				if ((kcp->cwnd + 1) * mss <= kcp->incr) {	
+					kcp->cwnd++;		
 				}
 			}
 			if (kcp->cwnd > kcp->rmt_wnd) {
